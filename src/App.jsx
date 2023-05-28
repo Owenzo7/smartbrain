@@ -1,5 +1,5 @@
 // import Facerecognition from "./Components/faceRecognition.component"
-// import ImageLinkForm from "./Components/imageLinkForm"
+import ImageLinkForm from "./Components/imageLinkForm"
 import Logo from "./Components/logo.component"
 import Navigation from "./Components/navigation.component"
 
@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       <Navigation />
       <Logo />
-      {/* <ImageLinkForm /> */}
+      <ImageLinkForm />
       {/* <Facerecognition /> */}
     </div>
   )
