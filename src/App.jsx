@@ -12,6 +12,7 @@ import ParticlesBg from "particles-bg";
 function App() {
   const [input, setInput] = useState("");
   const [imageUrl, setimageUrl] = useState("");
+  const [box, setBox] = useState({});
   const MODEL_ID = "face-detection";
 
   // const app = new Clarifai.App({
@@ -65,19 +66,41 @@ function App() {
     setInput(event.target.value);
   };
 
+  const calculateFaceLocation = (data) => {
+    const clarifaiFace =
+      data?.outputs[0].data?.regions[0].region_info?.bounding_box;
+    const image = document.getElementById("inputimage");
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - clarifaiFace.right_col * width,
+      bottomRow: height - clarifaiFace.bottom_row * height,
+    };
+  };
+
+  const displayFaceBox = (box) => {
+    console.log(box);
+    setBox(box);
+  };
+
   const onButtonSubmit = () => {
     setimageUrl(input);
     fetch(
       "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
       returnClarifyRequestOptions(input)
     )
-      .then((response) =>  response.json())
+      .then((response) => response.json())
       .then((data) => {
         console.log("API Response:", data);
+
         // Extract the URL from the response data
         const imageUrl = data?.outputs[0]?.input?.data?.image?.url;
         console.log("Extracted Image URL:", imageUrl);
         setimageUrl(imageUrl);
+
+        displayFaceBox(calculateFaceLocation(data));
       })
       .catch((error) => {
         console.log(error);
@@ -94,7 +117,7 @@ function App() {
         onInputChange={onInputChange}
         onButtonSubmit={onButtonSubmit}
       />
-      <Facerecognition imageUrl={imageUrl} />
+      <Facerecognition box={box} imageUrl={imageUrl} />
     </div>
   );
 }
