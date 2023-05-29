@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-// import Facerecognition from "./Components/faceRecognition.component"
+import Facerecognition from "./Components/faceRecognition.component"
 import { useEffect, useState } from "react";
 import ImageLinkForm from "./Components/imageLinkForm";
 import Logo from "./Components/logo.component";
@@ -74,8 +74,8 @@ function App() {
       .then((data) => {
         console.log(data);
       })
-      .catch(() => {
-        console.error(error);
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -89,7 +89,7 @@ function App() {
         onInputChange={onInputChange}
         onButtonSubmit={onButtonSubmit}
       />
-      {/* <Facerecognition /> */}
+      <Facerecognition />
     </div>
   );
 }
