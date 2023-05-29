@@ -1,18 +1,15 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
 import "./Styles/FaceRecognition.css";
 
-function Facerecognition() {
+function Facerecognition({ imageUrl }) {
   return (
-    <div className="center">
-      <img
-        src={
-          "https://m.media-amazon.com/images/M/MV5BMTQ2MjMwNDA3Nl5BMl5BanBnXkFtZTcwMTA2NDY3NQ@@._V1_FMjpg_UX1000_.jpg"
-        }
-        alt="Tom Hanks"
-        width={400}
-        height={400}
-      />
+    <div className="center ma">
+    <div className="absolute mt2">
+    <img src={imageUrl} width="250px" height="auto" />
+    
+    </div>
     </div>
   );
 }
