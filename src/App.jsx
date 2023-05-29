@@ -1,23 +1,33 @@
+
+// Ignore the two comments below( dont copy)
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
+// ========================================= //
 import Facerecognition from "./Components/faceRecognition.component";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ImageLinkForm from "./Components/imageLinkForm";
 import Logo from "./Components/logo.component";
 import Navigation from "./Components/navigation.component";
 import Rank from "./Components/rank.component";
 import ParticlesBg from "particles-bg";
-// import Clarifai from "clarifai";
+import Signin from "./Components/SignIn/signIn.component";
+import Register from "./Components/Register/register.component";
+// import Clarifai from "clarifai";  ----> Since the APi
+//  -----> was updated you dont have to import the Clarifai package Anymore
+
 
 function App() {
+
+  // Assignment of States to my React app
+  // ========================================//
+
   const [input, setInput] = useState("");
   const [imageUrl, setimageUrl] = useState("");
   const [box, setBox] = useState({});
+  const [route, setRoute] = useState("signin");
+  const [isSignedin, setIsSignedin] = useState(false);
   const MODEL_ID = "face-detection";
-
-  // const app = new Clarifai.App({
-  //   apiKey: "ca118054a1714dce900b8669d6793531",
-  // });
+   // ========================================//
 
   const returnClarifyRequestOptions = (input) => {
     // Your PAT (Personal Access Token) can be found in the portal under Authentification
@@ -57,10 +67,6 @@ function App() {
 
     return requestOptions;
   };
-
-  // useEffect(() => {
-
-  // })
 
   const onInputChange = (event) => {
     setInput(event.target.value);
@@ -107,17 +113,33 @@ function App() {
       });
   };
 
+  const onRouteChange = (route) => {
+    route === "signout"
+      ? setIsSignedin(false)
+      : route === "home"
+      ? setIsSignedin(true)
+      : setRoute(route);
+  };
+
   return (
     <div className="App">
       <ParticlesBg type="cobweb" bg={true} />
-      <Navigation />
-      <Logo />
-      <Rank />
-      <ImageLinkForm
-        onInputChange={onInputChange}
-        onButtonSubmit={onButtonSubmit}
-      />
-      <Facerecognition box={box} imageUrl={imageUrl} />
+      <Navigation isSignedin={isSignedin} onRouteChange={onRouteChange} />
+      {route === "home" ? (
+        <>
+          <Logo />
+          <Rank />
+          <ImageLinkForm
+            onInputChange={onInputChange}
+            onButtonSubmit={onButtonSubmit}
+          />
+          <Facerecognition box={box} imageUrl={imageUrl} />
+        </>
+      ) : route === "signin" ? (
+        <Signin onRouteChange={onRouteChange} />
+      ) : (
+        <Register onRouteChange={onRouteChange} />
+      )}
     </div>
   );
 }
