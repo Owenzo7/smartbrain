@@ -32,7 +32,7 @@ function App() {
     // Specify the correct user_id/app_id pairings
     // Since you're making inferences outside your app's scope
     const USER_ID = "3x35yv92krfd";
-    const APP_ID = "my-first-application";
+    const APP_ID = "test";
     // Change these to whatever model and image URL you want to use
 
     const IMAGE_URL = input;
@@ -71,7 +71,9 @@ function App() {
 
   const calculateFaceLocation = (data) => {
     const clarifaiFace =
-      data.outputs[0].data.regions[0].region_info.bounding_box;
+    data.outputs[0].data.regions[0].region_info.bounding_box;
+
+      console.log(` undefined ----> ${clarifaiFace}`);
     if (!clarifaiFace) {
       return {};
     }
@@ -99,14 +101,16 @@ function App() {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log("API Response:", data);
+        console.log("API Response:",data);
 
         // Extract the URL from the response data
         const imageUrl = data?.outputs[0]?.input?.data?.image?.url;
         console.log("Extracted Image URL:", imageUrl);
         setimageUrl(imageUrl);
 
-        displayFaceBox(calculateFaceLocation(data));
+        console.log(data)
+
+          displayFaceBox(calculateFaceLocation(data));
       })
       .catch((error) => {
         console.log(error);
