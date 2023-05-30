@@ -1,4 +1,3 @@
-
 // Ignore the two comments below( dont copy)
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
@@ -15,9 +14,7 @@ import Register from "./Components/Register/register.component";
 // import Clarifai from "clarifai";  ----> Since the APi
 //  -----> was updated you dont have to import the Clarifai package Anymore
 
-
 function App() {
-
   // Assignment of States to my React app
   // ========================================//
 
@@ -25,9 +22,9 @@ function App() {
   const [imageUrl, setimageUrl] = useState("");
   const [box, setBox] = useState({});
   const [route, setRoute] = useState("signin");
-  const [isSignedin, setIsSignedin] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(false);
   const MODEL_ID = "face-detection";
-   // ========================================//
+  // ========================================//
 
   const returnClarifyRequestOptions = (input) => {
     // Your PAT (Personal Access Token) can be found in the portal under Authentification
@@ -74,7 +71,10 @@ function App() {
 
   const calculateFaceLocation = (data) => {
     const clarifaiFace =
-      data?.outputs[0].data?.regions[0].region_info?.bounding_box;
+      data.outputs[0].data.regions[0].region_info.bounding_box;
+    if (!clarifaiFace) {
+      return {};
+    }
     const image = document.getElementById("inputimage");
     const width = Number(image.width);
     const height = Number(image.height);
@@ -114,19 +114,15 @@ function App() {
   };
 
   const onRouteChange = (route) => {
-    route === "signout"
-      ? setIsSignedin(false)
-      : route === "home"
-      ? setIsSignedin(true)
-      : setRoute(route);
+    setRoute(route)
   };
 
   return (
     <div className="App">
       <ParticlesBg type="cobweb" bg={true} />
-      <Navigation isSignedin={isSignedin} onRouteChange={onRouteChange} />
-      {route === "home" ? (
-        <>
+      <Navigation onRouteChange={onRouteChange} />
+      {route === "home" ? 
+        <div>
           <Logo />
           <Rank />
           <ImageLinkForm
@@ -134,12 +130,20 @@ function App() {
             onButtonSubmit={onButtonSubmit}
           />
           <Facerecognition box={box} imageUrl={imageUrl} />
-        </>
-      ) : route === "signin" ? (
-        <Signin onRouteChange={onRouteChange} />
-      ) : (
+        </div>
+        
+       : (
+
+        route === "signin" ?
+        <Signin onRouteChange={onRouteChange}/>
+        :
         <Register onRouteChange={onRouteChange} />
-      )}
+        )
+       
+        
+      
+    
+    }
     </div>
   );
 }
