@@ -114,14 +114,19 @@ function App() {
   };
 
   const onRouteChange = (route) => {
-    setRoute(route)
+    if (route === "signout") {
+      setIsSignedIn(false);
+    } else if (route === "home") {
+      setIsSignedIn(true);
+    }
+    setRoute(route);
   };
 
   return (
     <div className="App">
       <ParticlesBg type="cobweb" bg={true} />
-      <Navigation onRouteChange={onRouteChange} />
-      {route === "home" ? 
+      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
+      {route === "home" ? (
         <div>
           <Logo />
           <Rank />
@@ -131,19 +136,11 @@ function App() {
           />
           <Facerecognition box={box} imageUrl={imageUrl} />
         </div>
-        
-       : (
-
-        route === "signin" ?
-        <Signin onRouteChange={onRouteChange}/>
-        :
+      ) : route === "signin" ? (
+        <Signin onRouteChange={onRouteChange} />
+      ) : (
         <Register onRouteChange={onRouteChange} />
-        )
-       
-        
-      
-    
-    }
+      )}
     </div>
   );
 }
