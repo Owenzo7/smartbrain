@@ -26,6 +26,8 @@ function App() {
   const MODEL_ID = "face-detection";
   // ========================================//
 
+
+  // For the function below me I really need to work on all entries ---> PAT, USER_ID and APP_ID
   const returnClarifyRequestOptions = (input) => {
     // Your PAT (Personal Access Token) can be found in the portal under Authentification
     const PAT = "53f00386dd834c8eaccf5cbfdc80e7bf";
@@ -95,6 +97,9 @@ function App() {
 
   const onButtonSubmit = () => {
     setimageUrl(input);
+    // Need to work on my APi probably thats the one that is ruining the fetch call.
+    // Need to make sure that the response that I'm getting actually works
+    
     fetch(
       "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
       returnClarifyRequestOptions(input)
@@ -117,6 +122,9 @@ function App() {
       });
   };
 
+
+  // So far route remains working
+
   const onRouteChange = (route) => {
     if (route === "signout") {
       setIsSignedIn(false);
@@ -125,6 +133,8 @@ function App() {
     }
     setRoute(route);
   };
+
+  // The return statement is going exactly as expected!
 
   return (
     <div className="App">
