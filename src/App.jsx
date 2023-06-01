@@ -24,20 +24,20 @@ function App() {
   const [route, setRoute] = useState("signin");
   const [isSignedIn, setIsSignedIn] = useState(false);
   const MODEL_ID = "face-detection";
+
   // ========================================//
 
-
-  // For the function below me I really need to work on all entries ---> PAT, USER_ID and APP_ID
-  const returnClarifyRequestOptions = (input) => {
+  const returnClarifaiRequestOptions = (imageurl) => {
     // Your PAT (Personal Access Token) can be found in the portal under Authentification
-    const PAT = "53f00386dd834c8eaccf5cbfdc80e7bf";
+    const PAT = "cbd2789a0ec24a3a90037d04ba8f979c";
     // Specify the correct user_id/app_id pairings
     // Since you're making inferences outside your app's scope
     const USER_ID = "3x35yv92krfd";
     const APP_ID = "test";
+
     // Change these to whatever model and image URL you want to use
 
-    const IMAGE_URL = input;
+    const IMAGE_URL = imageurl;
 
     const raw = JSON.stringify({
       user_app_id: {
@@ -73,15 +73,12 @@ function App() {
 
   const calculateFaceLocation = (data) => {
     const clarifaiFace =
-    data.outputs[0].data.regions[0].region_info.bounding_box;
+      data.outputs[0].data.regions[0].region_info.bounding_box;
 
-      console.log(` undefined ----> ${clarifaiFace}`);
-    if (!clarifaiFace) {
-      return {};
-    }
     const image = document.getElementById("inputimage");
     const width = Number(image.width);
     const height = Number(image.height);
+
     return {
       leftCol: clarifaiFace.left_col * width,
       topRow: clarifaiFace.top_row * height,
@@ -96,32 +93,19 @@ function App() {
   };
 
   const onButtonSubmit = () => {
+    console.log("click");
     setimageUrl(input);
     // Need to work on my APi probably thats the one that is ruining the fetch call.
     // Need to make sure that the response that I'm getting actually works
-    
+
     fetch(
       "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
-      returnClarifyRequestOptions(input)
+      returnClarifaiRequestOptions(input)
     )
       .then((response) => response.json())
-      .then((data) => {
-        console.log("API Response:",data);
-
-        // Extract the URL from the response data
-        const imageUrl = data?.outputs[0]?.input?.data?.image?.url;
-        console.log("Extracted Image URL:", imageUrl);
-        setimageUrl(imageUrl);
-
-        console.log(data)
-
-          displayFaceBox(calculateFaceLocation(data));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then((data) => displayFaceBox(calculateFaceLocation(data)))
+      .catch((error) => console.log("error", error));
   };
-
 
   // So far route remains working
 
