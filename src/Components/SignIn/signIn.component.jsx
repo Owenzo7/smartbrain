@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 
-function Signin({ onRouteChange }) {
+function Signin({ onRouteChange, loadUser }) {
 
   // Setting States in Signin Component
 
@@ -33,11 +33,12 @@ function Signin({ onRouteChange }) {
       })
     })
     .then(response => response.json())
-    .then(data => {
-      data === "success" ?
-      onRouteChange("home")
-      : 
-      null
+    .then(user => {
+      if (user.id){
+        loadUser(user)
+        onRouteChange("home")
+      }
+      
 
     })
 

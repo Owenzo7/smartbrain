@@ -23,11 +23,27 @@ function App() {
   const [box, setBox] = useState({});
   const [route, setRoute] = useState("signin");
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [user, setUser] = useState({
+    id: "",
+    name: "",
+    email: "",
+
+    entries: { entries: 0 },
+    joined: "",
+  });
+
+  const loadUser = (data) => {
+    setUser({
+      id: data.id,
+      name: data.name,
+      email: data.email,
+
+      entries: { entries: data.entries },
+      joined: data.joined,
+    });
+  };
+
   const MODEL_ID = "face-detection";
-
-
-
-  
 
   // ========================================//
 
@@ -107,8 +123,63 @@ function App() {
       returnClarifaiRequestOptions(input)
     )
       .then((response) => response.json())
-      .then((data) => displayFaceBox(calculateFaceLocation(data)))
-      .catch((error) => console.log("error", error));
+      .then((data) => {
+        if (data) {
+          fetch("http://localhost:3004/image", {
+            method: "put",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: user.id,
+            }),
+          })
+            .then((response) => response.json())
+            .then((count) => {
+              setUser((prevUser) => ({
+                ...prevUser,
+                entries: { entries: count },
+              }));
+            });
+        }
+        displayFaceBox(calculateFaceLocation(data));
+      })
+      .catch((err) => console.log(err));
+
+    // .then(response => response.json())
+    // .then(data => {
+    //   if (data) {
+    //     fetch("http://localhost:3004/image", {
+    //       method: "post",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify({
+    //         id: user.id
+    //       })
+    //     })
+    //       .then(response => response.json())
+    //       .then(count => {
+    //         setUser(prevUser => ({
+    //           ...prevUser,
+    //           entries: count
+    //         }));
+    //       });
+    //   }
+    //   displayFaceBox(calculateFaceLocation(data));
+    // })
+    // .catch(err => console.log(err));
+
+    // .then((response) => response.json())
+    // .then((data) =>
+    //   if (data) {
+    //     fetch("http://localhost:3004/image", {
+    //       method:"post",
+    // headers: {'Content-Type': 'application/json'},
+    // body: JSON.stringify({
+    //   id: user.id,
+
+    //     })
+    //   },
+
+    // displayFaceBox(calculateFaceLocation(data)))
+    // .catch((error) => console.log("error", error));
   };
 
   // So far route remains working
@@ -131,7 +202,7 @@ function App() {
       {route === "home" ? (
         <div>
           <Logo />
-          <Rank />
+          <Rank name={user.name} entries={user.entries.entries} />
           <ImageLinkForm
             onInputChange={onInputChange}
             onButtonSubmit={onButtonSubmit}
@@ -139,9 +210,9 @@ function App() {
           <Facerecognition box={box} imageUrl={imageUrl} />
         </div>
       ) : route === "signin" ? (
-        <Signin onRouteChange={onRouteChange} />
+        <Signin loadUser={loadUser} onRouteChange={onRouteChange} />
       ) : (
-        <Register onRouteChange={onRouteChange} />
+        <Register loadUser={loadUser} onRouteChange={onRouteChange} />
       )}
     </div>
   );
