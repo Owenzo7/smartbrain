@@ -41,6 +41,11 @@ function App() {
       entries: { entries: data.entries },
       joined: data.joined,
     });
+
+
+    setInput("");
+    setimageUrl("");
+    setBox({});    
   };
 
   const MODEL_ID = "face-detection";
