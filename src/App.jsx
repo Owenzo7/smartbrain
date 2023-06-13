@@ -52,6 +52,8 @@ function App() {
 
   // ========================================//
 
+  // Whole function shortens the importation of the Clarifai Module
+
   const returnClarifaiRequestOptions = (imageurl) => {
     // Your PAT (Personal Access Token) can be found in the portal under Authentification
     const PAT = "cbd2789a0ec24a3a90037d04ba8f979c";
@@ -96,6 +98,7 @@ function App() {
     setInput(event.target.value);
   };
 
+  // Design for the bounding box on the given image
   const calculateFaceLocation = (data) => {
     const clarifaiFace =
       data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -120,8 +123,9 @@ function App() {
   const onButtonSubmit = () => {
     console.log("click");
     setimageUrl(input);
-    // Need to work on my APi probably thats the one that is ruining the fetch call.
-    // Need to make sure that the response that I'm getting actually works
+
+    // Just make sure when inserting the pic that it has a shorter url
+    // Successful api response below
 
     fetch(
       "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
