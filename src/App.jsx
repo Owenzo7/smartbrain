@@ -134,7 +134,7 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         if (data) {
-          fetch("http://localhost:3004/image", {
+          fetch("https://smartbrain-api-lsdl.onrender.com/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
