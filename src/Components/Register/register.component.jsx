@@ -20,7 +20,7 @@ function Register({ onRouteChange, loadUser }) {
   };
 
   const onSubmitSignIn = () => {
-    fetch("https://smartbrain-app-cnpa.onrender.com/register", {
+    fetch("https://smartbrain-api-lsdl.onrender.com/register", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
