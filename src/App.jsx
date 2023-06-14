@@ -13,7 +13,7 @@ import Signin from "./Components/SignIn/signIn.component";
 import Register from "./Components/Register/register.component";
 // import Clarifai from "clarifai";  ----> Since the APi
 //  -----> was updated you dont have to import the Clarifai package Anymore
-
+// installed some node modules
 function App() {
   // Assignment of States to my React app
   // ========================================//
