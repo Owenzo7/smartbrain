@@ -24,7 +24,7 @@ function Signin({ onRouteChange, loadUser }) {
 
   const onSubmitSignIn = () => {
 
-    fetch("https://smartbrain-api-lsdl.onrender.com/image/signin", {
+    fetch("https://smartbrain-app-cnpa.onrender.com/signin", {
       method:"post",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
